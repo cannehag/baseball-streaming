@@ -81,6 +81,7 @@ A pitcher directory consists of the following files:
 ```
 .
 ├── count.txt
+├── pitchcount.txt
 ├── era.txt
 ├── firstname.txt
 ├── flag.png
@@ -106,6 +107,7 @@ The complete output directory is structured as follows:
 ├── away_score.txt
 ├── away_team.txt
 ├── balls.txt
+├── balls.png
 ├── bases
 │   ├── ooo.png
 │   ├── oox.png
@@ -219,6 +221,7 @@ The complete output directory is structured as follows:
 │   └── 2.png
 ├── outs.png
 ├── strikes.txt
+├── strikes.png
 └── team_resources
     ├── colors
     │   ├── ALB.png

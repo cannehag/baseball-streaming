@@ -47,8 +47,19 @@ public class FilesServiceTest {
         Stream.of(tempDir.listFiles((f) -> f.isDirectory() && f.getName().equals("outs")))
             .findFirst();
 
+    Optional<File> ballsDir =
+        Stream.of(tempDir.listFiles((f) -> f.isDirectory() && f.getName().equals("balls")))
+            .findFirst();
+
+    Optional<File> strikesDir =
+        Stream.of(tempDir.listFiles((f) -> f.isDirectory() && f.getName().equals("strikes")))
+            .findFirst();
+
+
     assertTrue(basesDir.isPresent());
     assertTrue(outsDir.isPresent());
+    assertTrue(ballsDir.isPresent());
+    assertTrue(strikesDir.isPresent());
     assertTrue(teamResourcesDir.isPresent());
 
     assertTrue(fileExistAndIsNonEmpty(basesDir.get(), "ooo.png"));
@@ -63,6 +74,15 @@ public class FilesServiceTest {
     assertTrue(fileExistAndIsNonEmpty(outsDir.get(), "0.png"));
     assertTrue(fileExistAndIsNonEmpty(outsDir.get(), "1.png"));
     assertTrue(fileExistAndIsNonEmpty(outsDir.get(), "2.png"));
+
+    assertTrue(fileExistAndIsNonEmpty(ballsDir.get(), "0.png"));
+    assertTrue(fileExistAndIsNonEmpty(ballsDir.get(), "1.png"));
+    assertTrue(fileExistAndIsNonEmpty(ballsDir.get(), "2.png"));
+    assertTrue(fileExistAndIsNonEmpty(ballsDir.get(), "3.png"));
+
+    assertTrue(fileExistAndIsNonEmpty(strikesDir.get(), "0.png"));
+    assertTrue(fileExistAndIsNonEmpty(strikesDir.get(), "1.png"));
+    assertTrue(fileExistAndIsNonEmpty(strikesDir.get(), "2.png"));
 
     Optional<File> playerImagesDir =
         Stream.of(
@@ -166,6 +186,7 @@ public class FilesServiceTest {
     client.copyFileFromResource(
         "/wbsc/default-player.jpg", "team_resources/player_images/default.png");
     FilesService service = new FilesService(client);
+    service.initResources();
     Play play = JsonMapper.fromJson(playJson, Play.class);
     service.updatePlay(play);
 
@@ -184,6 +205,7 @@ public class FilesServiceTest {
     assertTrue(fileExistAndIsNonEmpty(currentPitcherDir.get(), "image.png"));
     assertTrue(fileExistAndIsNonEmpty(currentPitcherDir.get(), "walks.txt"));
     assertTrue(fileExistAndIsNonEmpty(currentPitcherDir.get(), "count.txt"));
+    assertTrue(fileExistAndIsNonEmpty(currentPitcherDir.get(), "pitchcount.txt"));
     assertTrue(fileExistAndIsNonEmpty(currentPitcherDir.get(), "fullname.txt"));
     assertTrue(fileExistAndIsNonEmpty(currentPitcherDir.get(), "pitching.txt"));
     assertTrue(fileExistAndIsNonEmpty(currentPitcherDir.get(), "lastname.txt"));
@@ -235,7 +257,9 @@ public class FilesServiceTest {
 
     assertTrue(fileExistAndIsNonEmpty(tempDir, "count.txt"));
     assertTrue(fileExistAndIsNonEmpty(tempDir, "balls.txt"));
+    assertTrue(fileExistAndIsNonEmpty(tempDir, "balls.png"));
     assertTrue(fileExistAndIsNonEmpty(tempDir, "strikes.txt"));
+    assertTrue(fileExistAndIsNonEmpty(tempDir, "strikes.png"));
 
     assertTrue(fileExistAndIsNonEmpty(tempDir, "inning_text.txt"));
 

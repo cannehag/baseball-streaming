@@ -39,6 +39,15 @@ public class FilesService {
     filesClient.copyFileFromResource("/outs/1.png", "outs/1.png");
     filesClient.copyFileFromResource("/outs/2.png", "outs/2.png");
 
+    filesClient.copyFileFromResource("/balls/0.png", "balls/0.png");
+    filesClient.copyFileFromResource("/balls/1.png", "balls/1.png");
+    filesClient.copyFileFromResource("/balls/2.png", "balls/2.png");
+    filesClient.copyFileFromResource("/balls/3.png", "balls/3.png");
+
+    filesClient.copyFileFromResource("/strikes/0.png", "strikes/0.png");
+    filesClient.copyFileFromResource("/strikes/1.png", "strikes/1.png");
+    filesClient.copyFileFromResource("/strikes/2.png", "strikes/2.png");
+
     filesClient.copyFileFromResource(
         "/images/player-image-default.png", "team_resources/player_images/default.png");
     filesClient.copyFileFromResource(
@@ -162,14 +171,40 @@ public class FilesService {
               situation.put("balls", s.balls().orElse("0"));
               situation.put("strikes", s.strikes().orElse("0"));
             });
+    
+    updateCount(situation);
+  }
+
+  private void updateCount(Map<String, String> situation) throws IOException {
+    String balls = situation.getOrDefault("balls", "0");
+    String strikes = situation.getOrDefault("strikes", "0");
 
     filesClient.writeStringToFile(
         "count.txt",
-        String.format(
-            "%s - %s",
-            situation.getOrDefault("balls", "0"), situation.getOrDefault("strikes", "0")));
-    filesClient.writeStringToFile("balls.txt", situation.getOrDefault("balls", "0"));
-    filesClient.writeStringToFile("strikes.txt", situation.getOrDefault("strikes", "0"));
+        String.format("%s - %s", balls, strikes));
+  
+    filesClient.writeStringToFile("balls.txt", balls);
+    filesClient.writeStringToFile("strikes.txt", strikes);
+
+    String ballsTarget = "balls.png";
+    if ("1".equals(balls)) {
+      filesClient.copyFile("balls/1.png", ballsTarget);
+    } else if ("2".equals(balls)) {
+      filesClient.copyFile("balls/2.png", ballsTarget);
+    } else if ("3".equals(balls)) {
+      filesClient.copyFile("balls/3.png", ballsTarget);
+    } else {
+      filesClient.copyFile("balls/0.png", ballsTarget);
+    }
+
+    String strikesTarget = "strikes.png";
+    if ("1".equals(strikes)) {
+      filesClient.copyFile("strikes/1.png", strikesTarget);
+    } else if ("2".equals(strikes)) {
+      filesClient.copyFile("strikes/2.png", strikesTarget);
+    } else {
+      filesClient.copyFile("strikes/0.png", strikesTarget);
+    }
   }
 
   private void updateBases() throws IOException {
@@ -224,6 +259,9 @@ public class FilesService {
   private void updatePitcher(final Player pitcher, final String subdir) throws IOException {
     filesClient.writeStringToFile(
         subdir + "/count.txt", String.format("P: %s", pitcher.pitches().orElse("0")));
+
+    filesClient.writeStringToFile(
+        subdir + "/pitchcount.txt", pitcher.pitches().orElse("0"));
 
     filesClient.writeStringToFile(subdir + "/firstname.txt", pitcher.firstName().orElse(""));
     filesClient.writeStringToFile(subdir + "/fullname.txt", pitcher.fullName().orElse(""));
