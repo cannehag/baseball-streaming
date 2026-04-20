@@ -168,8 +168,34 @@ public class FilesService {
         String.format(
             "%s - %s",
             situation.getOrDefault("balls", "0"), situation.getOrDefault("strikes", "0")));
+    updateBallsAndStrikes(situation);
     filesClient.writeStringToFile("balls.txt", situation.getOrDefault("balls", "0"));
     filesClient.writeStringToFile("strikes.txt", situation.getOrDefault("strikes", "0"));
+  }
+
+  private void updateBallsAndStrikes(Map<String, String> situation) throws IOException {
+    String balls = situation.getOrDefault("balls", "0");
+    String strikes = situation.getOrDefault("strikes", "0");
+  
+    String ballsTarget = "balls.png";
+    if ("1".equals(balls)) {
+      filesClient.copyFile("balls/1.png", ballsTarget);
+    } else if ("2".equals(balls)) {
+      filesClient.copyFile("balls/2.png", ballsTarget);
+    } else if ("3".equals(balls)) {
+      filesClient.copyFile("balls/3.png", ballsTarget);
+    } else {
+      filesClient.copyFile("balls/0.png", ballsTarget);
+    }
+
+    String strikesTarget = "strikes.png";
+    if ("1".equals(strikes)) {
+      filesClient.copyFile("strikes/1.png", strikesTarget);
+    } else if ("2".equals(strikes)) {
+      filesClient.copyFile("strikes/2.png", strikesTarget);
+    } else {
+      filesClient.copyFile("strikes/0.png", strikesTarget);
+    }
   }
 
   private void updateBases() throws IOException {
